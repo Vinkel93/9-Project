@@ -1,0 +1,71 @@
+output:
+BroilerWeight_C_mean - mean weight of birds (males and females!)
+NoAnimals_C_mean - antal dyr
+WaterTotalPerBird_C_mean - vand per fugl (døde dyr taget i forbehold)
+FeedTotalPerBird_C_mean - foder per fugl (døde dyr taget i forbehold)
+
+input:
+HumiditySetpoint_mean - reference for humidity
+DOL278TTemp_mean - temperature sensor (alternative navne: InsideTemperatureSensor1_mean, Temperature_mean)
+OutsideTemp_mean - målt udetemperatur
+CO2_mean - målt co2
+InsideHumiditySensor1_mean - målt humidity (alternativ: Humidity_mean)
+DayNo - tid i dage
+VentDemand_mean - ventilations reference (internal)
+LightIntensityMain_mean - reference lys (nogen gange målt lys!)
+HouseHeatingDemand_mean - målt varme-systems-intensity 
+
+Referencer til climastyring:
+HumiditySetpoint_mean - reference climate system
+TempSetpoint_mean - reference temperature
+
+
+Mystery parameters:
+TempSpAdditions_mean - *temperature reference + farmers ændringer
+HumidificationDemand_mean - 
+HouseHeatingSetpoint_mean - 
+
+struct af batch:
+TS - epoch sec (hvornår batchen kørte).
+metadata:
+	* batchfinished
+	* sampling interval i dage
+	* name: uniks id for batchen
+	* data source: sporbarhed af batch (hvor kommer den fra)
+
+data: (x by y) data array
+dataInfo: x databeskrivelser (struct)
+
+
+
+test:
+
+batchData.SampleInterval_1_hours{end}.dataInfo(254)
+
+ans = 
+
+  struct with fields:
+
+    field: 'HouseHeatingTotal_mean'
+     unit: 'h'
+
+plot(batchData.SampleInterval_1_hours{end}.data(254,:))
+
+
+
+
+Find og plot test:
+
+> find(cellfun(@(x) ~isempty(strfind(lower(x),'heating')), {batchData.SampleInterval_24_hours{end}.dataInfo.field}')')
+
+ans =
+
+  Columns 1 through 13
+
+    80    81    82    83    84    85   236   237   238   239   240   241   254
+
+  Columns 14 through 18
+
+   255   256   257   258   259
+
+>> plot(batchData.SampleInterval_1_hours{end}.data(259,:))
